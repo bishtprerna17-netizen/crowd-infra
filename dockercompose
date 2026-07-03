@@ -1,0 +1,13 @@
+version: '3.8'
+
+services:
+  web:
+    # `${DOCKERHUB_USERNAME}` pipeline se automatic replace ho jayega, 
+    # ya aap yahan direct apna username bhi likh sakti hain.
+    image: crowdmind-app:latest
+    container_name: crowdmind-container
+    restart: always
+    ports:
+      - "80:5000"  # Server ke port 80 (HTTP) ko container ke port 5000 se map kar rahe hain
+    environment:
+      - FLASK_ENV=production
