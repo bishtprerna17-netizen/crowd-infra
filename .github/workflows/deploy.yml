@@ -36,18 +36,15 @@ jobs:
           username: ubuntu
           key: ${{ secrets.AWS_EC2_SSH_KEY }}
           script: |
-            # 1. System ko update karo aur Docker install karo
-            sudo apt-get update -y
-            sudo apt-get install -y docker.io docker-compose
-            
-            # 2. Current user ko docker group mein daalo taaki bina sudo ke bhi chal sake
-            sudo usermod -aG docker ubuntu
-            
-            # 3. Ab aapki asli commands kaam karne lagengi
+            # 1. DockerHub par login
             sudo docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+
+            # 2. Latest image pull karna
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/crowdmind-app:latest
-            
-            # Agar single container hai toh aise run karo (bina compose ke):
+
+            # 3. Agar purana container pehle se chal raha hai toh use stop aur remove karna
             sudo docker stop crowdmind-container || true
             sudo docker rm crowdmind-container || true
+
+            # 4. Naya container port 80 (ya aapka jo bhi container port hai) par start karna
             sudo docker run -d --name crowdmind-container -p 80:5000 ${{ secrets.DOCKERHUB_USERNAME }}/crowdmind-app:latest
