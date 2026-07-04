@@ -42,9 +42,9 @@ jobs:
             # 2. Latest image pull karna
             sudo docker pull ${{ secrets.DOCKERHUB_USERNAME }}/crowdmind-app:latest
 
-            # 3. Agar purana container pehle se chal raha hai toh use stop aur remove karna
+            # 3. Purane chal rahe container ko stop aur remove karna (agar koi hai toh)
             sudo docker stop crowdmind-container || true
             sudo docker rm crowdmind-container || true
 
-            # 4. Naya container port 80 (ya aapka jo bhi container port hai) par start karna
+            # 4. Naya container port 80 par run karna
             sudo docker run -d --name crowdmind-container -p 80:5000 ${{ secrets.DOCKERHUB_USERNAME }}/crowdmind-app:latest
